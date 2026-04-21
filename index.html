@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MM ABX Sequence Skeleton v1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-alt: #F5F4F0;
+  --text: #1A1A18;
+  --text-2: #5C5C58;
+  --text-3: #8E8E89;
+  --border: #E5E4E0;
+  --border-strong: #D0CFC9;
+  --purple: #534AB7;
+  --purple-bg: #EEEDFE;
+  --purple-text: #3C3489;
+  --teal: #0F6E56;
+  --teal-bg: #E1F5EE;
+  --teal-text: #085041;
+  --coral: #993C1D;
+  --coral-bg: #FAECE7;
+  --coral-text: #712B13;
+  --amber: #854F0B;
+  --amber-bg: #FAEEDA;
+  --amber-text: #633806;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --blue-text: #0C447C;
+  --pink: #993556;
+  --pink-bg: #FBEAF0;
+  --pink-text: #72243E;
+  --green: #3B6D11;
+  --green-bg: #EAF3DE;
+  --green-text: #27500A;
+  --red: #A32D2D;
+  --red-bg: #FCEBEB;
+  --red-text: #791F1F;
+  --gray: #5F5E5A;
+  --gray-bg: #F1EFE8;
+  --gray-text: #444441;
+  --font: 'DM Sans', -apple-system, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* Header */
+.header {
+  margin-bottom: 48px;
+}
+.header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.header-meta {
+  font-size: 14px;
+  color: var(--text-2);
+}
+.header-meta span { color: var(--text-3); }
+
+/* Status banner */
+.status-banner {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+.chip-draft { background: var(--amber-bg); color: var(--amber-text); }
+.chip-context { background: var(--purple-bg); color: var(--purple-text); }
+.chip-infra { background: var(--green-bg); color: var(--green-text); }
+
+/* Section */
+.section {
+  margin-bottom: 48px;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.section p {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+  max-width: 720px;
+}
+
+/* Architecture overview grid */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.arch-card {
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.arch-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.arch-card .arch-acct {
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.arch-card .arch-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.arch-t1 { background: var(--purple-bg); }
+.arch-t1 h3 { color: var(--purple-text); }
+.arch-t1 .arch-acct { color: var(--purple); }
+.arch-t2 { background: var(--teal-bg); }
+.arch-t2 h3 { color: var(--teal-text); }
+.arch-t2 .arch-acct { color: var(--teal); }
+.arch-t3 { background: var(--blue-bg); }
+.arch-t3 h3 { color: var(--blue-text); }
+.arch-t3 .arch-acct { color: var(--blue); }
+.arch-t4 { background: var(--gray-bg); }
+.arch-t4 h3 { color: var(--gray-text); }
+.arch-t4 .arch-acct { color: var(--gray); }
+
+/* Persona cards */
+.persona-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.persona-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.persona-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.persona-role {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.persona-smit {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-2);
+  line-height: 1.5;
+  border-left: 2px solid var(--border-strong);
+  padding-left: 10px;
+}
+
+/* Sequence detail blocks */
+.seq-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.seq-header {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.seq-header:hover { background: var(--surface-alt); }
+.seq-tier-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.badge-t1 { background: var(--purple-bg); color: var(--purple-text); }
+.badge-t2 { background: var(--teal-bg); color: var(--teal-text); }
+.badge-t3 { background: var(--blue-bg); color: var(--blue-text); }
+.badge-t4 { background: var(--gray-bg); color: var(--gray-text); }
+.seq-persona-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--surface-alt);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.seq-title {
+  font-size: 15px;
+  font-weight: 600;
+  flex: 1;
+}
+.seq-toggle {
+  font-size: 18px;
+  color: var(--text-3);
+  transition: transform 0.2s;
+}
+.seq-toggle.open { transform: rotate(180deg); }
+.seq-body {
+  display: none;
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--border);
+}
+.seq-body.open { display: block; padding-top: 20px; }
+.seq-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.meta-item {
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.meta-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-3);
+  margin-bottom: 2px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Steps timeline */
+.steps { position: relative; }
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.step:last-child { margin-bottom: 0; }
+.step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.step-day {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  position: relative;
+  z-index: 1;
+}
+.step-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 4px;
+}
+.step-content {
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+.step-channel {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.ch-email { color: var(--purple); }
+.ch-linkedin { color: var(--blue); }
+.ch-call { color: var(--teal); }
+.ch-task { color: var(--amber); }
+.step-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.step-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.step-copy {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-radius: 6px;
+  border: 1px dashed var(--border-strong);
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+  font-style: italic;
+}
+.step-copy strong {
+  font-style: normal;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Convergence callout */
+.convergence {
+  background: var(--amber-bg);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-top: 24px;
+}
+.convergence h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amber-text);
+  margin-bottom: 6px;
+}
+.convergence p {
+  font-size: 12px;
+  color: var(--amber-text);
+  line-height: 1.5;
+  max-width: none;
+}
+
+/* Discussion questions */
+.discussion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.discussion h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.q-list {
+  list-style: none;
+}
+.q-list li {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+.q-list li:last-child { border-bottom: none; }
+.q-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+/* Infrastructure callout */
+.infra-block {
+  background: var(--red-bg);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.infra-block h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red-text);
+  margin-bottom: 8px;
+}
+.infra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.infra-item {
+  font-size: 12px;
+  color: var(--red-text);
+  line-height: 1.5;
+  padding: 6px 0;
+}
+.infra-item strong { font-weight: 500; }
+
+/* Trigger logic */
+.trigger-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.trigger-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-3);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.trigger-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  vertical-align: top;
+}
+.trigger-table tr:last-child td { border-bottom: none; }
+
+/* Footer */
+.doc-footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-3);
+  display: flex;
+  justify-content: space-between;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">MM ABX Program &middot; Phase 1</div>
+    <h1>Sequence skeleton &mdash; v1 draft</h1>
+    <div class="header-meta">
+      Morgan Turner &middot; April 20, 2026 <span>&middot; For Jordan async review</span>
+    </div>
+  </div>
+
+  <div class="status-banner">
+    <span class="status-chip chip-draft">&#9679; Draft &mdash; structural outline, not final copy</span>
+    <span class="status-chip chip-context">DJ Rhoten on PTO &mdash; solo build this week</span>
+    <span class="status-chip chip-infra">Marketo 50% live &mdash; SFDC ABX fields next in queue</span>
+  </div>
+
+  <!-- OVERVIEW: System cascade + sequence summary -->
+  <div class="section" style="padding-bottom:20px;">
+    <div style="text-align:center;margin-bottom:6px;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Core engines (both motions)</div>
+      <div style="display:flex;gap:6px;justify-content:center;margin-bottom:4px;">
+        <span style="padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;background:var(--purple-bg);border:1px solid var(--purple);color:var(--purple-text);">6sense</span>
+        <span style="padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text);">Salesforce</span>
+        <span style="padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;background:var(--teal-bg);border:1px solid var(--teal);color:var(--teal-text);">Marketo</span>
+      </div>
+      <div style="font-size:16px;color:var(--text-3);margin-bottom:4px;">&darr; &darr;</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <!-- Acquisition side -->
+      <div style="background:var(--blue-bg);border:1px solid var(--blue);border-radius:12px;padding:14px 16px;border-top:3px solid var(--blue);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+          <div style="font-size:14px;font-weight:600;color:var(--blue-text);">Acquisition</div>
+          <div style="font-size:18px;font-weight:700;color:var(--blue);">9,753</div>
+        </div>
+        <div style="font-size:11px;color:var(--blue-text);opacity:0.7;margin-bottom:10px;">Net-new prospects &middot; Cody + Jared (AEs) &middot; <span style="font-weight:500;">Outreach</span> + <span style="font-weight:500;">Slack</span></div>
+        <div style="display:flex;gap:4px;margin-bottom:8px;">
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);">T1</div>
+            <div style="font-size:14px;font-weight:700;color:var(--blue);">48</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);">T2</div>
+            <div style="font-size:14px;font-weight:700;color:var(--blue);">522</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);">T3</div>
+            <div style="font-size:14px;font-weight:700;color:var(--blue);">4,638</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);">T4</div>
+            <div style="font-size:14px;font-weight:700;color:var(--blue);">4,545</div>
+          </div>
+        </div>
+        <div style="font-size:11px;line-height:1.6;color:var(--blue-text);">
+          <div><strong>T1/T2</strong> &mdash; Outreach persona sequences (Olivia 6 steps, Charlie 4, Peter 4, Sam 3)</div>
+          <div><strong style="opacity:0.6;">T3/T4</strong> &mdash; Marketo nurture, Outreach on escalation</div>
+          <div><strong>Ghost</strong> &mdash; Marketo + LinkedIn, 900+/mo trial signals</div>
+        </div>
+      </div>
+
+      <!-- Expansion side -->
+      <div style="background:var(--teal-bg);border:1px solid var(--teal);border-radius:12px;padding:14px 16px;border-top:3px solid var(--teal);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+          <div style="font-size:14px;font-weight:600;color:var(--teal-text);">Expansion</div>
+          <div style="font-size:18px;font-weight:700;color:var(--teal);">1,722</div>
+        </div>
+        <div style="font-size:11px;color:var(--teal-text);opacity:0.7;margin-bottom:10px;">984 active + 738 winback &middot; Charlie W. (AMs) &middot; <span style="font-weight:500;">Qualified</span> + <span style="font-weight:500;">Slack</span></div>
+        <div style="display:flex;gap:4px;margin-bottom:6px;">
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--teal-text);">T1</div>
+            <div style="font-size:14px;font-weight:700;color:var(--teal);">49</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--teal-text);">T2</div>
+            <div style="font-size:14px;font-weight:700;color:var(--teal);">111</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--teal-text);">T3</div>
+            <div style="font-size:14px;font-weight:700;color:var(--teal);">361</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.6);border-radius:4px;padding:4px 6px;text-align:center;">
+            <div style="font-size:9px;font-weight:600;color:var(--teal-text);">T4</div>
+            <div style="font-size:14px;font-weight:700;color:var(--teal);">463</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.4);border-radius:4px;padding:4px 6px;text-align:center;border:1px dashed var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);">WB</div>
+            <div style="font-size:14px;font-weight:700;color:var(--amber);">738</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px;margin-bottom:8px;">
+          <div style="flex:1;background:rgba(255,255,255,0.5);border-radius:4px;padding:5px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">AM workload</div>
+            <div style="font-size:13px;font-weight:700;color:var(--teal);">~80/AM</div>
+            <div style="font-size:9px;color:var(--teal-text);opacity:0.7;">160 T1+T2 across 2 AMs</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.5);border-radius:4px;padding:5px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">Marketing-owned</div>
+            <div style="font-size:13px;font-weight:700;color:var(--teal);">1,562</div>
+            <div style="font-size:9px;color:var(--teal-text);opacity:0.7;">824 T3/T4 + 738 winback</div>
+          </div>
+        </div>
+        <div style="font-size:11px;line-height:1.6;color:var(--teal-text);">
+          <div><strong>T1/T2</strong> &mdash; Qualified + Slack (Olivia upgrade 4 steps, Charlie ROI 3, Sam Showcases 3)</div>
+          <div><strong style="opacity:0.6;">T3/T4</strong> &mdash; Marketo adoption nurture, Qualified on escalation</div>
+          <div><strong>Winback</strong> &mdash; 738 lost/churned, Marketo-only (8 with active growth &mdash; investigate)</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:10px;padding:8px 14px;background:var(--amber-bg);border-radius:8px;border:1px solid var(--amber);font-size:11px;color:var(--amber-text);text-align:center;font-weight:500;">
+      Same engines, different last mile &middot; 6sense + Salesforce + Marketo power both motions &middot; Only the rep-facing tool changes
+    </div>
+
+    <!-- Cascade flow tabs -->
+    <div style="margin-top:16px;">
+      <div style="display:flex;gap:4px;margin-bottom:12px;background:var(--surface-alt);border-radius:8px;padding:3px;border:1px solid var(--border);width:fit-content;">
+        <button onclick="showCascade('c-acq',this)" class="cascade-tab cascade-tab-active" style="padding:6px 16px;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:var(--blue-bg);color:var(--blue-text);font-family:inherit;">Acquisition cascade</button>
+        <button onclick="showCascade('c-exp',this)" class="cascade-tab" style="padding:6px 16px;font-size:12px;font-weight:400;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--text-3);font-family:inherit;">Expansion cascade</button>
+        <button onclick="showCascade('c-wb',this)" class="cascade-tab" style="padding:6px 16px;font-size:12px;font-weight:400;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--text-3);font-family:inherit;">Winback</button>
+        <button onclick="showCascade('c-ghost',this)" class="cascade-tab" style="padding:6px 16px;font-size:12px;font-weight:400;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--text-3);font-family:inherit;">Ghost Tier</button>
+        <button onclick="showCascade('c-net',this)" class="cascade-tab" style="padding:6px 16px;font-size:12px;font-weight:400;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--text-3);font-family:inherit;">Network Expansion</button>
+      </div>
+
+      <!-- ACQ CASCADE -->
+      <div id="c-acq" class="cascade-panel" style="display:block;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green);">Cody + Jared's AE team</span>
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple);">Marketing air cover</span>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">T1/T2 &mdash; AE-owned in Outreach (570 accounts)</div>
+        <div style="display:flex;gap:0;margin-bottom:10px;">
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">6sense</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Intent detected</div>
+            <div style="font-size:9px;color:var(--text-3);">Consideration+ buying stage</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--coral-bg);border-left:3px solid var(--coral);">
+            <div style="font-size:9px;font-weight:600;color:var(--coral-text);text-transform:uppercase;letter-spacing:0.5px;">ZoomInfo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Auto-enrich</div>
+            <div style="font-size:9px;color:var(--text-3);">2-3 contacts, persona-matched</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Account created</div>
+            <div style="font-size:9px;color:var(--text-3);">Tier, persona, buying stage fields</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--green-bg);border-left:3px solid var(--green);">
+            <div style="font-size:9px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;">Outreach</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Persona sequences</div>
+            <div style="font-size:9px;color:var(--text-3);">Olivia (6), Charlie (4), Peter (4)</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AE notified</div>
+            <div style="font-size:9px;color:var(--text-3);">Account, tier, signals</div>
+          </div>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">T3/T4 &mdash; Marketo nurture, Outreach on escalation (9,183 accounts)</div>
+        <div style="display:flex;gap:0;margin-bottom:4px;">
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">6sense</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">TAL + display</div>
+            <div style="font-size:9px;color:var(--text-3);">Awareness/Target stage</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Nurture cadence</div>
+            <div style="font-size:9px;color:var(--text-3);">Buying stage-aware, automated</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Score threshold</div>
+            <div style="font-size:9px;color:var(--text-3);">Triggers escalation to Outreach</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--green-bg);border-left:3px solid var(--green);">
+            <div style="font-size:9px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;">Outreach</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Sequence enrollment</div>
+            <div style="font-size:9px;color:var(--text-3);">Promoted to T2-style persona seq</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AE alert</div>
+            <div style="font-size:9px;color:var(--text-3);">Account promoted, review</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP CASCADE -->
+      <div id="c-exp" class="cascade-panel" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--pink-bg);color:var(--pink-text);border:1px solid var(--pink);">Charlie W.'s AM team</span>
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple);">Marketing engine</span>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">T1/T2 &mdash; AM-owned via Qualified + Slack (160 accounts)</div>
+        <div style="display:flex;gap:0;margin-bottom:10px;">
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">6sense</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Intent + usage</div>
+            <div style="font-size:9px;color:var(--text-3);">Feature research, competitor signals</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Upgrade nurture</div>
+            <div style="font-size:9px;color:var(--text-3);">Usage benchmarks, feature gaps</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Upgrade trigger</div>
+            <div style="font-size:9px;color:var(--text-3);">Growth signal or QBR trigger fires</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AM notified</div>
+            <div style="font-size:9px;color:var(--text-3);">Usage data + talk track pushed</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--pink-bg);border-left:3px solid var(--pink);">
+            <div style="font-size:9px;font-weight:600;color:var(--pink-text);text-transform:uppercase;letter-spacing:0.5px;">Qualified</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AM engages</div>
+            <div style="font-size:9px;color:var(--text-3);">Real-time chat, SFDC context</div>
+          </div>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">T3/T4 &mdash; Marketo nurture, Qualified on escalation (824 accounts)</div>
+        <div style="display:flex;gap:0;margin-bottom:4px;">
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">6sense</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Passive monitoring</div>
+            <div style="font-size:9px;color:var(--text-3);">Feature research, competitor</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Adoption nurture</div>
+            <div style="font-size:9px;color:var(--text-3);">Feature tips, vertical benchmarks</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Upgrade trigger</div>
+            <div style="font-size:9px;color:var(--text-3);">Engagement spike or usage threshold</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AM alert</div>
+            <div style="font-size:9px;color:var(--text-3);">Promote to T2 + upgrade path</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--pink-bg);border-left:3px solid var(--pink);">
+            <div style="font-size:9px;font-weight:600;color:var(--pink-text);text-transform:uppercase;letter-spacing:0.5px;">Qualified</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Available for chat</div>
+            <div style="font-size:9px;color:var(--text-3);">Pricing/upgrade page routing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WB CASCADE -->
+      <div id="c-wb" class="cascade-panel" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple);">Marketing-owned (Marketo)</span>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">738 lost/churned &mdash; no AM/AE unless signal fires</div>
+        <div style="display:flex;gap:0;margin-bottom:4px;">
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Lost/churned status</div>
+            <div style="font-size:9px;color:var(--text-3);">691 lost, 47 churned</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Re-engagement nurture</div>
+            <div style="font-size:9px;color:var(--text-3);">"We've changed" messaging</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">6sense</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Intent monitoring</div>
+            <div style="font-size:9px;color:var(--text-3);">New intent = escalation signal</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Alert on signal only</div>
+            <div style="font-size:9px;color:var(--text-3);">Manual review before re-engaging</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--red-text);margin-top:6px;padding:6px 10px;background:var(--red-bg);border-radius:6px;">8 accounts tagged lost/churned but showing active user growth. SFDC status investigation needed.</div>
+      </div>
+
+      <!-- GHOST CASCADE -->
+      <div id="c-ghost" class="cascade-panel" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple);">Marketing-owned (Marketo + LinkedIn)</span>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">900+ trial signups/month &mdash; decision-maker activation</div>
+        <div style="display:flex;gap:0;margin-bottom:4px;">
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Frankie signs up</div>
+            <div style="font-size:9px;color:var(--text-3);">Field crew trial, not a buyer</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--coral-bg);border-left:3px solid var(--coral);">
+            <div style="font-size:9px;font-weight:600;color:var(--coral-text);text-transform:uppercase;letter-spacing:0.5px;">ZoomInfo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Account match</div>
+            <div style="font-size:9px;color:var(--text-3);">Identify Olivia/Charlie contacts</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--purple-bg);border-left:3px solid var(--purple);">
+            <div style="font-size:9px;font-weight:600;color:var(--purple-text);text-transform:uppercase;letter-spacing:0.5px;">Marketo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Frankie nurture</div>
+            <div style="font-size:9px;color:var(--text-3);">Adoption tips, "show your boss"</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--blue-bg);border-left:3px solid var(--blue);">
+            <div style="font-size:9px;font-weight:600;color:var(--blue-text);text-transform:uppercase;letter-spacing:0.5px;">LinkedIn</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Decision-maker ads</div>
+            <div style="font-size:9px;color:var(--text-3);">"Your team already chose CC"</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Graduation</div>
+            <div style="font-size:9px;color:var(--text-3);">Prospect connected to 2+ Ghost Tier contacts (interest, not conversion)</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:6px;padding:6px 10px;background:var(--surface-alt);border-radius:6px;border:1px solid var(--border);">Ghost Tier never routes to sales. Ghost Tier contacts are people who showed interest or engagement (trial signup, ad interaction, site visit) but didn't meet ICP criteria. Graduation triggers when a prospect account is connected to 2+ of these contacts — a network awareness signal that CompanyCam is on the radar in their professional circle, even if those contacts never converted. Promotes to acquisition (AE/Outreach) or expansion (AM/Qualified + Slack) by ICP fit.</div>
+      </div>
+
+      <!-- NETWORK EXPANSION CASCADE -->
+      <div id="c-net" class="cascade-panel" style="display:none;">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green);">AE-executed (Cody + Jared)</span>
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--teal-bg);color:var(--teal-text);border:1px solid var(--teal);">AM referral assist</span>
+          <span style="font-size:10px;font-weight:500;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple-text);border:1px solid var(--purple);">Kelly Danahy concept</span>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Customer signal &rarr; net-new prospect enters acquisition cascade</div>
+        <div style="display:flex;gap:0;margin-bottom:10px;">
+          <div style="flex:1;padding:8px 10px;background:var(--teal-bg);border-left:3px solid var(--teal);">
+            <div style="font-size:9px;font-weight:600;color:var(--teal-text);text-transform:uppercase;letter-spacing:0.5px;">AM assist</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Signal originates</div>
+            <div style="font-size:9px;color:var(--text-3);">Job site overlap, referral, or peer cluster from existing customer</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--coral-bg);border-left:3px solid var(--coral);">
+            <div style="font-size:9px;font-weight:600;color:var(--coral-text);text-transform:uppercase;letter-spacing:0.5px;">ZoomInfo</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Prospect enrichment</div>
+            <div style="font-size:9px;color:var(--text-3);">Enrich referred company, ID Olivia/Charlie</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--surface-alt);border-left:3px solid var(--text-3);">
+            <div style="font-size:9px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Salesforce</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">TAL entry + referral tag</div>
+            <div style="font-size:9px;color:var(--text-3);">New prospect account, warm source tracked</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--green-bg);border-left:3px solid var(--green);">
+            <div style="font-size:9px;font-weight:600;color:var(--green-text);text-transform:uppercase;letter-spacing:0.5px;">Outreach</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">Peer-referenced sequence</div>
+            <div style="font-size:9px;color:var(--text-3);">"Your GC runs on CompanyCam" variant copy</div>
+          </div>
+          <div style="flex:0 0 12px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:10px;">&rarr;</div>
+          <div style="flex:1;padding:8px 10px;background:var(--amber-bg);border-left:3px solid var(--amber);">
+            <div style="font-size:9px;font-weight:600;color:var(--amber-text);text-transform:uppercase;letter-spacing:0.5px;">Slack</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);">AE notified</div>
+            <div style="font-size:9px;color:var(--text-3);">Referral source + warm context for AE</div>
+          </div>
+        </div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-3);margin:10px 0 6px;">Four signal mechanisms (Kelly's framework)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+          <div style="padding:6px 10px;background:var(--green-bg);border-radius:6px;border-left:3px solid var(--green);">
+            <div style="font-size:10px;font-weight:600;color:var(--green-text);">Job site mapping</div>
+            <div style="font-size:9px;color:var(--text-3);">Customers working alongside non-customers on same projects</div>
+          </div>
+          <div style="padding:6px 10px;background:var(--green-bg);border-radius:6px;border-left:3px solid var(--green);">
+            <div style="font-size:10px;font-weight:600;color:var(--green-text);">Referral-triggered ABX</div>
+            <div style="font-size:9px;color:var(--text-3);">AM facilitates intro, AE owns the account from TAL entry</div>
+          </div>
+          <div style="padding:6px 10px;background:var(--green-bg);border-radius:6px;border-left:3px solid var(--green);">
+            <div style="font-size:10px;font-weight:600;color:var(--green-text);">Trade peer clustering</div>
+            <div style="font-size:9px;color:var(--text-3);">Similar companies in same trade/geography as top customers</div>
+          </div>
+          <div style="padding:6px 10px;background:var(--green-bg);border-radius:6px;border-left:3px solid var(--green);">
+            <div style="font-size:10px;font-weight:600;color:var(--green-text);">Champion-as-advocate</div>
+            <div style="font-size:9px;color:var(--text-3);">Top Olivia/Peter users recruited for peer intros + case studies</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:6px;padding:6px 10px;background:var(--surface-alt);border-radius:6px;border:1px solid var(--border);">Signal comes from expansion (customer data), but execution is acquisition (AE-owned in Outreach). AMs may facilitate a referral ask or warm intro but don't own the referred account. This is the expansion counterpart to Ghost Tier: Ghost Tier activates decision-makers at prospect companies via field crew trials. Network Expansion activates decision-makers at similar companies via customer relationships.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Architecture Overview -->
+  <div class="section">
+    <div class="section-label">01 &mdash; Architecture overview</div>
+    <h2>Tier-based sequence strategy</h2>
+    <p>Sequences are structured by tier first, then threaded by persona within each tier. <strong>Key infrastructure update (Apr 20):</strong> Marketo implementation is 50% complete and actively syncing records with Salesforce. ABX custom fields are next in the RevOps queue. This means T3/T4 nurture sequences can be built in Marketo now, while T1/T2 stay in Outreach for sales-owned personalization. Phase 1 T1/T2 enrollment remains manual until 6sense &rarr; SFDC integration is live.</p>
+    <p style="font-size:12px;color:var(--text-3);margin-bottom:16px;padding:10px 14px;background:var(--surface-alt);border-radius:8px;border:1px solid var(--border);"><strong style="color:var(--text-2);">Core engines (both motions):</strong> 6sense &middot; Salesforce &middot; Marketo &nbsp;&nbsp;|&nbsp;&nbsp; <strong style="color:var(--text-2);">Acquisition last-mile:</strong> Outreach + Slack (Cody + Jared's AEs) &nbsp;&nbsp;|&nbsp;&nbsp; <strong style="color:var(--text-2);">Expansion last-mile:</strong> Qualified + Slack (Charlie W.'s AMs) &nbsp;&nbsp;|&nbsp;&nbsp; <strong style="color:var(--text-2);">Enrichment:</strong> ZoomInfo</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;border-top:3px solid var(--teal);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--teal-text);">Expansion</div>
+            <div style="font-size:11px;color:var(--text-3);">Active customers &middot; Charlie W.'s AM team</div>
+          </div>
+          <div style="font-size:20px;font-weight:700;color:var(--teal);">984</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:10px;">
+          <div style="background:var(--teal-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">T1</div>
+            <div style="font-size:15px;font-weight:700;color:var(--teal);">49</div>
+          </div>
+          <div style="background:var(--teal-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">T2</div>
+            <div style="font-size:15px;font-weight:700;color:var(--teal);">111</div>
+          </div>
+          <div style="background:var(--teal-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">T3</div>
+            <div style="font-size:15px;font-weight:700;color:var(--teal);">361</div>
+          </div>
+          <div style="background:var(--teal-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--teal-text);">T4</div>
+            <div style="font-size:15px;font-weight:700;color:var(--teal);">463</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-2);line-height:1.5;">
+          <div style="margin-bottom:3px;"><strong style="color:var(--teal-text);">T1/T2 (160):</strong> Qualified + Slack, AM-owned. Upgrade + feature expansion (Marketing Suite, Elite, Showcases).</div>
+          <div style="margin-bottom:3px;"><strong style="color:var(--text-3);">T3/T4 (824):</strong> Marketo nurture. Auto-enrolled, no AM involvement.</div>
+          <div><strong style="color:var(--amber-text);">Winback (738):</strong> Lost/churned, separate Marketo play.</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;border-top:3px solid var(--blue);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--blue-text);">Acquisition</div>
+            <div style="font-size:11px;color:var(--text-3);">Net-new prospects &middot; Cody + Jared's AE team</div>
+          </div>
+          <div style="font-size:20px;font-weight:700;color:var(--blue);">9,753</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:10px;">
+          <div style="background:var(--blue-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--blue-text);">T1</div>
+            <div style="font-size:15px;font-weight:700;color:var(--blue);">48</div>
+          </div>
+          <div style="background:var(--blue-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--blue-text);">T2</div>
+            <div style="font-size:15px;font-weight:700;color:var(--blue);">522</div>
+          </div>
+          <div style="background:var(--blue-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--blue-text);">T3</div>
+            <div style="font-size:15px;font-weight:700;color:var(--blue);">4,638</div>
+          </div>
+          <div style="background:var(--blue-bg);border-radius:6px;padding:6px 8px;text-align:center;">
+            <div style="font-size:10px;font-weight:600;color:var(--blue-text);">T4</div>
+            <div style="font-size:15px;font-weight:700;color:var(--blue);">4,545</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-2);line-height:1.5;">
+          <div style="margin-bottom:3px;"><strong style="color:var(--blue-text);">T1/T2 (570):</strong> Outreach, AE-owned. Persona-driven pain &rarr; proof &rarr; CTA sequences.</div>
+          <div style="margin-bottom:3px;"><strong style="color:var(--text-3);">T3/T4 (9,183):</strong> Marketo nurture + 6sense display. AE engages on buying stage shift.</div>
+          <div><strong style="color:var(--purple-text);">Ghost Tier:</strong> Trial signups &rarr; decision-maker activation via Marketo + LinkedIn.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Personas -->
+  <div class="section">
+    <div class="section-label">02 &mdash; Persona threads</div>
+    <h2>Who are we sequencing?</h2>
+    <p>Each tier runs parallel persona threads. Olivia/Peter are the primary targets (champions who feel the pain). Charlie is the economic buyer reached through enablement + ambient channels. Sam is the expansion play for existing customers.</p>
+
+    <div class="persona-row">
+      <div class="persona-card">
+        <div class="persona-name">Olivia</div>
+        <div class="persona-role">VP Ops / Ops Lead &middot; Champion</div>
+        <div class="persona-smit">"You shouldn't have to call around to know what's happening on your jobs."</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-name">Peter</div>
+        <div class="persona-role">Project Manager &middot; Influencer</div>
+        <div class="persona-smit">"Stop digging. Everything you need is already there."</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-name">Charlie</div>
+        <div class="persona-role">CEO / Owner &middot; Economic Buyer</div>
+        <div class="persona-smit">"Your business shouldn't depend on you being everywhere."</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-name">Sam</div>
+        <div class="persona-role">Sales / CRO &middot; Expansion</div>
+        <div class="persona-smit">"Your past jobs are your best sales tool. You're just not using them yet."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Infrastructure update -->
+  <div class="section">
+    <div class="section-label">03 &mdash; Infrastructure update</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div style="background:var(--green-bg);border-radius:10px;padding:18px 22px;">
+        <h4 style="font-size:13px;font-weight:600;color:var(--green-text);margin-bottom:10px;">What's live or in progress</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--green);">
+            <div style="font-size:11px;font-weight:600;color:var(--green-text);">Marketo &harr; SFDC sync</div>
+            <div style="font-size:11px;color:var(--green-text);opacity:0.8;">50% complete. Records flowing.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--green);">
+            <div style="font-size:11px;font-weight:600;color:var(--green-text);">Jira tickets moving</div>
+            <div style="font-size:11px;color:var(--green-text);opacity:0.8;">RO-648&ndash;653 under epic RO-638</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--green);">
+            <div style="font-size:11px;font-weight:600;color:var(--green-text);">ABX custom fields</div>
+            <div style="font-size:11px;color:var(--green-text);opacity:0.8;">Confirmed next after Marketo stories</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--green);">
+            <div style="font-size:11px;font-weight:600;color:var(--green-text);">6sense component</div>
+            <div style="font-size:11px;color:var(--green-text);opacity:0.8;">Scoping in progress</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--teal);">
+            <div style="font-size:11px;font-weight:600;color:var(--teal-text);">Active TAL merged</div>
+            <div style="font-size:11px;color:var(--teal-text);opacity:0.8;">984 accounts (546 + 438 Charlie net-new)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.5);border-radius:6px;padding:8px 10px;border-left:3px solid var(--teal);">
+            <div style="font-size:11px;font-weight:600;color:var(--teal-text);">Winback separated</div>
+            <div style="font-size:11px;color:var(--teal-text);opacity:0.8;">738 lost/churned &rarr; Marketo play</div>
+          </div>
+        </div>
+      </div>
+      <div class="infra-block" style="margin-bottom:0;">
+        <h4>Still pending</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:rgba(255,255,255,0.35);border-radius:6px;padding:8px 10px;border-left:3px solid var(--red);">
+            <div style="font-size:11px;font-weight:600;color:var(--red-text);">6sense &rarr; SFDC</div>
+            <div style="font-size:11px;color:var(--red-text);opacity:0.8;">Needs component install</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.35);border-radius:6px;padding:8px 10px;border-left:3px solid var(--red);">
+            <div style="font-size:11px;font-weight:600;color:var(--red-text);">Outreach &rarr; Marketo</div>
+            <div style="font-size:11px;color:var(--red-text);opacity:0.8;">No automated enrollment yet</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.35);border-radius:6px;padding:8px 10px;border-left:3px solid var(--red);">
+            <div style="font-size:11px;font-weight:600;color:var(--red-text);">Account assignment</div>
+            <div style="font-size:11px;color:var(--red-text);opacity:0.8;">AE routing not in system</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.35);border-radius:6px;padding:8px 10px;border-left:3px solid var(--red);">
+            <div style="font-size:11px;font-weight:600;color:var(--red-text);">API monitoring</div>
+            <div style="font-size:11px;color:var(--red-text);opacity:0.8;">Watching Marketo &harr; SFDC volume</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>Phase 1 T1/T2 sequences still require <strong>manual enrollment</strong> &mdash; AEs enroll in Outreach (acquisition), AMs engage via Qualified + Slack (expansion). The key change: <strong>Marketo is now the orchestration layer for T3/T4 nurture</strong>, replacing the "future state" assumption. The core engines &mdash; <strong>6sense, Salesforce, and Marketo</strong> &mdash; power both motions identically. The only thing that changes is the last-mile engagement tool: Outreach for acquisition AEs, Qualified + Slack for expansion AMs.</p>
+
+    <!-- System ownership split -->
+    <div class="seq-block" style="margin-top:20px;">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-persona-badge" style="background:var(--purple-bg);color:var(--purple-text);">New</span>
+        <span class="seq-title">System ownership split &mdash; Outreach vs. Marketo</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <table class="trigger-table">
+          <thead>
+            <tr><th style="width:20%">System</th><th style="width:20%">Owns</th><th style="width:30%">Sequence type</th><th>Enrollment</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500;color:var(--blue-text);background:var(--blue-bg);">Outreach</td>
+              <td style="background:var(--blue-bg);">T1 + T2 Acquisition</td>
+              <td>AE-owned persona threads. 1:1 (T1) and 1:few (T2) with personalization. Cody + Jared's team. Prospect pain &rarr; proof &rarr; CTA sequences.</td>
+              <td>Manual AE enrollment (Phase 1). SFDC &rarr; Slack alerts on intent signals. Future: Marketo &rarr; Outreach auto-trigger.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;color:var(--pink-text);background:var(--pink-bg);">Qualified + Slack</td>
+              <td style="background:var(--pink-bg);">T1 + T2 Expansion</td>
+              <td>AM-owned engagement. Charlie W.'s team. Real-time Qualified chat when customer visits site + Slack notifications with account data and talk tracks. Upgrade + feature expansion narrative.</td>
+              <td>SFDC &rarr; Slack push on growth signals. Qualified routes inbound site visits to AM with context. Marketo warms account before AM touch.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;color:var(--teal-text);background:var(--teal-bg);">Marketo</td>
+              <td style="background:var(--teal-bg);">T3 + T4</td>
+              <td>Marketing-owned nurture. Buying stage-triggered email sequences. Lighter touch, automated, persona-aware but not personalized. No AM/AE time.</td>
+              <td>Auto-enrollment on TAL entry. Buying stage progression triggers content shifts. SFDC &rarr; Slack on escalation triggers.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;color:var(--amber-text);background:var(--amber-bg);">Marketo &rarr; Outreach</td>
+              <td style="background:var(--amber-bg);">T3/T4 promotion</td>
+              <td>When a T3/T4 account hits Consideration, Marketo flags it and SFDC pushes a Slack notification. Acquisition: AE reviews, promotes to Outreach T2-style sequence. Expansion: AM reviews, engages via Qualified + Slack.</td>
+              <td>Phase 1: manual promotion via SFDC &rarr; Slack alert. Phase 2: automated Marketo &rarr; SFDC task &rarr; Outreach enrollment (acq) or Qualified routing (exp).</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;color:var(--purple-text);background:var(--purple-bg);">Marketo</td>
+              <td style="background:var(--purple-bg);">Champion enablement</td>
+              <td>The Olivia &rarr; Charlie bridge. When Olivia engages with Email 3 (CTA shift), Marketo can auto-trigger the Charlie ROI one-pager send &mdash; reducing AM/AE coordination burden.</td>
+              <td>Engagement trigger (email open/click on specific asset). Phase 2 build.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Acquisition Sequences -->
+  <div class="section">
+    <div class="section-label">04 &mdash; Acquisition sequences &middot; AE team (Cody + Jared)</div>
+    <h2>Persona-driven outbound &mdash; net-new prospects</h2>
+    <p>Pain-forward sequences targeting prospects who don't know CompanyCam yet. Persona threads run in parallel on each account, converging at the champion enablement step. This is the primary build focus this week.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:var(--blue-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue);">
+        <div style="font-size:11px;font-weight:600;color:var(--blue-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">AE workload</div>
+        <div style="font-size:16px;font-weight:700;color:var(--blue-text);">~285/AE</div>
+        <div style="font-size:10px;color:var(--blue-text);opacity:0.7;">570 T1+T2 across 2 AEs</div>
+      </div>
+      <div style="background:var(--teal-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--teal);">
+        <div style="font-size:11px;font-weight:600;color:var(--teal-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Marketo nurture</div>
+        <div style="font-size:16px;font-weight:700;color:var(--teal-text);">9,183</div>
+        <div style="font-size:10px;color:var(--teal-text);opacity:0.7;">T3/T4 acq accounts, no AE time</div>
+      </div>
+      <div style="background:var(--purple-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple);">
+        <div style="font-size:11px;font-weight:600;color:var(--purple-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Ghost Tier</div>
+        <div style="font-size:16px;font-weight:700;color:var(--purple-text);">900+/mo</div>
+        <div style="font-size:10px;color:var(--purple-text);opacity:0.7;">Trial signups &rarr; decision-maker activation</div>
+      </div>
+    </div>
+
+    <!-- T2 Olivia -->
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t2">T2</span>
+        <span class="seq-persona-badge">Olivia &middot; Champion</span>
+        <span class="seq-title">Operations pain &rarr; proof &rarr; CTA</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">6 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">18 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email &middot; LinkedIn &middot; Call</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 1</div>
+              <div class="step-name">Pain-forward cold open</div>
+              <div class="step-desc">Lead with the daily reality Olivia lives in. No product mention. No pitch. Just prove we understand her world. Goal: earn the open on Email 2.</div>
+              <div class="step-copy"><strong>Direction:</strong> "The 7am status calls. The end-of-day photo dumps nobody looks at. You already know something's broken in how your crews report from the field."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 3</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn</div>
+              <div class="step-name">AE connection request</div>
+              <div class="step-desc">Personalized connect with a one-line reference to something account-specific &mdash; recent project, job posting (signals growth), industry news, or 6sense intent signal (if visible). Not a pitch &mdash; just a warm touch.</div>
+              <div class="step-copy"><strong>Direction:</strong> "Saw [Company] is expanding into [market/region] &mdash; always good to connect with folks scaling ops in [vertical]."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 5</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 2</div>
+              <div class="step-name">Proof point &mdash; vertical-matched</div>
+              <div class="step-desc">Case study or metric matched to their trade. Lead with the outcome, not the tool. Link to ungated content. Goal: build credibility through peer evidence.</div>
+              <div class="step-copy"><strong>Direction:</strong> "[Vertical] company with [X] crews cut documentation time by 60%. Their ops lead said the biggest change was knowing what's happening on every job without a single phone call." <br><br><strong>Content need:</strong> Vertical-specific case study one-pagers (ask Cortney about availability)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 8</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-call">Call 1</div>
+              <div class="step-name">First phone touch</div>
+              <div class="step-desc">Reference the emails. Keep it short &mdash; 90 seconds max if voicemail. Goal: voice confirmation that this is a real human, not a spam sequence. Leave a voicemail that adds value, don't just say "following up."</div>
+              <div class="step-copy"><strong>Voicemail direction:</strong> "Hey [Name], this is [AE] &mdash; I sent you a note about how [vertical] ops leaders are handling field documentation differently. Figured it's easier to just talk about it. Call me back or I'll follow up by email &mdash; either way, no pressure."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 12</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 3</div>
+              <div class="step-name">CTA shift &mdash; awareness to action</div>
+              <div class="step-desc">First direct ask. Position as low-commitment &mdash; not a demo, a conversation. Include the champion enablement hook: give Olivia something she can forward to Charlie.</div>
+              <div class="step-copy"><strong>Direction:</strong> "Worth 15 minutes to see if this fits how your team works? I can also send you a one-pager that breaks down the ROI for a [X]-crew operation &mdash; something easy to share with your leadership if it makes sense."<br><br><strong>Convergence:</strong> This is where the Olivia and Charlie threads connect. The "share with your leadership" language plants the seed for the champion-to-buyer handoff.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 18</div><div class="step-dot" style="background:var(--purple)"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 4</div>
+              <div class="step-name">Honest close</div>
+              <div class="step-desc">Breakup email. No guilt, no urgency tricks. Leave the door open. Brand voice: candid, human, zero pressure.</div>
+              <div class="step-copy"><strong>Direction:</strong> "If timing's off, no problem. But the crews documenting jobs right now are the ones winning disputes and referrals. Here if you want to talk."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T2 Charlie -->
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t2">T2</span>
+        <span class="seq-persona-badge">Charlie &middot; Economic Buyer</span>
+        <span class="seq-title">ROI / risk angle &mdash; lighter touch</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">4 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">16 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email &middot; LinkedIn</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 1</div>
+              <div class="step-name">Revenue risk &mdash; one story</div>
+              <div class="step-desc">Charlie thinks in dollars and risk. Open with a concrete scenario that maps to their worst day &mdash; a disputed invoice, a denied claim, a callback that costs $15K. No product name in the first paragraph.</div>
+              <div class="step-copy"><strong>Direction:</strong> "One missed photo. One disputed invoice. For a [vertical] company running [X] crews, that's not a documentation problem &mdash; it's a revenue problem. And it's happening more often than your team is telling you."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 5</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn</div>
+              <div class="step-name">Thought leadership share</div>
+              <div class="step-desc">Not a connection request &mdash; AE shares or tags a relevant CompanyCam thought leadership post that speaks to Charlie's world (scaling, risk management, operational efficiency). Ambient awareness.</div>
+              <div class="step-copy"><strong>Direction:</strong> Share post about documentation-as-revenue-protection, or a contractor scaling story. Charlie sees the AE's name in context of industry expertise, not outbound selling.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 10</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 2</div>
+              <div class="step-name">ROI proof &mdash; their scale</div>
+              <div class="step-desc">Hard numbers mapped to their company size. Frame it as what they're leaving on the table, not what they'd gain. Loss aversion > aspiration for Charlie.</div>
+              <div class="step-copy"><strong>Direction:</strong> "Companies your size typically recover $[X]K in the first quarter just from dispute documentation alone. That's before you factor in the 8&ndash;10 hours/week your ops team gets back."<br><br><strong>Content need:</strong> ROI calculator or one-pager that scales by crew count (ask Cortney/Charley)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 16</div><div class="step-dot" style="background:var(--purple)"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 3</div>
+              <div class="step-name">Champion bridge</div>
+              <div class="step-desc">If Olivia has engaged (opened, clicked, replied), reference that signal. If not, frame it as "your ops team may already be looking at this." The goal is to create a reason for Charlie to ask Olivia about it internally.</div>
+              <div class="step-copy"><strong>Direction (if Olivia signal exists):</strong> "Your ops team has been looking into this &mdash; figured it's worth getting on your radar too. Happy to walk you both through what it looks like at your scale."<br><br><strong>Direction (no signal):</strong> "I've been talking to ops leaders at [vertical] companies your size about field documentation. Worth a quick conversation to see if the numbers make sense for [Company]?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="convergence">
+          <h4>Champion &rarr; buyer convergence</h4>
+          <p>The Charlie thread is intentionally lighter (4 steps vs. Olivia's 6) because Charlie isn't the entry point &mdash; Olivia is. The ideal outcome is Olivia forwarding the Email 3 ROI one-pager to Charlie, which primes him before his own Email 2 arrives. The timing overlap between Olivia Day 12 ("share with your leadership") and Charlie Day 10 (ROI proof) is deliberate.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- T2 Peter -->
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t2">T2</span>
+        <span class="seq-persona-badge">Peter &middot; Influencer</span>
+        <span class="seq-title">Daily workflow fit &mdash; evaluator angle</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">4 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">14 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email &middot; LinkedIn</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 1</div>
+              <div class="step-name">The dig &mdash; information retrieval pain</div>
+              <div class="step-desc">Peter lives in project data. His pain is finding things &mdash; photos from last Tuesday, the note the crew left, the before shot from the walkthrough. Open with the search problem.</div>
+              <div class="step-copy"><strong>Direction:</strong> "How long did you spend last week looking for a photo someone definitely took but nobody can find? PMs at [vertical] companies tell us it's 3&ndash;5 hours a week of digging through texts, emails, and shared drives."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 4</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn</div>
+              <div class="step-name">Connection request &mdash; peer angle</div>
+              <div class="step-desc">AE connects as a peer, not a seller. Reference the project management angle &mdash; "always good to connect with PMs running complex field ops."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 7</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 2</div>
+              <div class="step-name">Workflow proof &mdash; "everything already there"</div>
+              <div class="step-desc">Show what organized looks like. Before/after of a PM's workflow &mdash; scattered texts and emails vs. one timeline per project. Lean into Peter's evaluator mindset: give him enough to form an opinion.</div>
+              <div class="step-copy"><strong>Content need:</strong> PM-focused workflow comparison asset (short video or visual one-pager showing the search &rarr; find workflow)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 14</div><div class="step-dot" style="background:var(--purple)"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 3</div>
+              <div class="step-name">Ally recruitment</div>
+              <div class="step-desc">Peter is an influencer, not a buyer. This email positions him as the internal voice: "if this looks useful to you, it's worth flagging to your ops lead." Same convergence play as Olivia &rarr; Charlie, but one layer deeper.</div>
+              <div class="step-copy"><strong>Direction:</strong> "If the search-and-find problem resonates, you're probably not the only one feeling it. Happy to put together a quick brief your ops lead could look at &mdash; no commitment, just something concrete to evaluate."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T2 Sam -->
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t2">T2</span>
+        <span class="seq-persona-badge">Sam &middot; Expansion</span>
+        <span class="seq-title">Past jobs as sales tools &mdash; existing customers only</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">3 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">10 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email &middot; LinkedIn</div></div>
+        </div>
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:16px;padding:0 4px;">Sam sequences only run against existing CompanyCam customers where a sales/estimator persona has been identified. This is an expansion play, not acquisition.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 1</div>
+              <div class="step-name">Hidden asset &mdash; your job history is a sales deck</div>
+              <div class="step-desc">Sam's pain is losing bids. The insight: every completed job documented in CompanyCam is a before/after portfolio. They're sitting on a sales weapon they don't know they have.</div>
+              <div class="step-copy"><strong>Direction:</strong> "Your crews have already documented hundreds of jobs. That's not just a record &mdash; it's a sales deck. Before-and-afters organized by project, ready to pull into any bid. You're just not using them yet."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 4</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn</div>
+              <div class="step-name">Peer share &mdash; sales use case</div>
+              <div class="step-desc">Share a post or case study about sales teams using field documentation to close deals. Tag-based, not direct pitch.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 10</div><div class="step-dot" style="background:var(--purple)"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Email 2</div>
+              <div class="step-name">Showcases + Elite upgrade CTA</div>
+              <div class="step-desc">Introduce Showcases feature (before/after galleries for bids) and the Elite tier. This is the product reveal &mdash; only after the use case is established. Position as "you already have the content, this just makes it usable."</div>
+              <div class="step-copy"><strong>Direction:</strong> "Quick thing &mdash; Showcases lets you pull before-and-afters from any project into a shareable gallery. Your estimators can attach it to any bid in under a minute. Worth a look?"<br><br><strong>Content need:</strong> Showcases product one-pager or short demo video (ask Cortney/Charley)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: T1 Personalization Layer -->
+  <div class="section">
+    <div class="section-label">05 &mdash; T1 personalization layer</div>
+    <h2>What changes for T1</h2>
+    <p>T1 uses the same persona threads and step sequence as T2, but every touch is account-specific. Outreach provides the cadence; the AE provides the content. Here's what's different:</p>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t1">T1</span>
+        <span class="seq-persona-badge">All personas</span>
+        <span class="seq-title">Personalization requirements per step</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <table class="trigger-table">
+          <thead>
+            <tr><th style="width:25%">T2 step</th><th style="width:35%">T1 upgrade</th><th>AE action required</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Email 1: Pain-forward</td>
+              <td>Reference a specific project, market, or growth signal from the account</td>
+              <td>AE writes custom opening paragraph. Template provides structure only.</td>
+            </tr>
+            <tr>
+              <td>LinkedIn connect</td>
+              <td>Include a comment on something the contact posted or shared</td>
+              <td>AE spends 5 min reviewing contact's LinkedIn activity before connecting</td>
+            </tr>
+            <tr>
+              <td>Email 2: Proof point</td>
+              <td>Match to their exact vertical AND scale (crew count, region)</td>
+              <td>AE selects case study. Marketing provides a menu of 4&ndash;6 options by vertical.</td>
+            </tr>
+            <tr>
+              <td>Call</td>
+              <td>Account-specific talk track referencing known projects or pain signals</td>
+              <td>AE reviews 6sense intent signals + any Gong history before dialing</td>
+            </tr>
+            <tr>
+              <td>CTA / Champion bridge</td>
+              <td>Name-drop internal contacts if multi-threaded ("your team at [location]")</td>
+              <td>AE customizes based on what's working across the parallel persona threads</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5b: Expansion Sequences -->
+  <div class="section">
+    <div class="section-label">05b &mdash; Expansion sequences &middot; AM team (Charlie W.)</div>
+    <h2>Upgrade + feature expansion &mdash; active customers</h2>
+    <p>Different narrative from acquisition: these accounts already use CompanyCam. The goal is tier upgrades (Standard &rarr; Pro &rarr; Elite), feature adoption (Marketing Suite, Showcases, AI Walkthroughs), and seat expansion. Same personas, different entry point. Same core engines &mdash; 6sense, Salesforce, and Marketo run the signal detection, data, and nurture for expansion just like acquisition. The difference is the last mile: AMs work through <strong>Qualified</strong> (real-time chat when customers visit the site) and <strong>Slack</strong> (notifications with account data + talk tracks) instead of Outreach.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:var(--teal-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--teal);">
+        <div style="font-size:11px;font-weight:600;color:var(--teal-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">AM workload</div>
+        <div style="font-size:16px;font-weight:700;color:var(--teal-text);">~80/AM</div>
+        <div style="font-size:10px;color:var(--teal-text);opacity:0.7;">160 T1+T2 across 2 AMs</div>
+      </div>
+      <div style="background:var(--green-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--green);">
+        <div style="font-size:11px;font-weight:600;color:var(--green-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Growth signal</div>
+        <div style="font-size:16px;font-weight:700;color:var(--green-text);">508</div>
+        <div style="font-size:10px;color:var(--green-text);opacity:0.7;">Accounts with 6mo user growth data</div>
+      </div>
+      <div style="background:var(--amber-bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--amber);">
+        <div style="font-size:11px;font-weight:600;color:var(--amber-text);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Tier upgrades</div>
+        <div style="font-size:16px;font-weight:700;color:var(--amber-text);">48</div>
+        <div style="font-size:10px;color:var(--amber-text);opacity:0.7;">Moved to higher tier from growth data</div>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge" style="background:var(--teal-bg);color:var(--teal-text);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;">EXP</span>
+        <span class="seq-persona-badge">Olivia &middot; Champion</span>
+        <span class="seq-title">Feature discovery &rarr; upgrade path</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">4 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">14 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email (Marketo) &middot; Qualified &middot; Slack</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 1</div>
+              <div class="step-name">Usage benchmark &mdash; you're ahead of most</div>
+              <div class="step-desc">Lead with data they already have. "Your team documented [X] jobs last month. That puts you in the top 20% of [vertical] companies on CompanyCam. Here's what the top 5% do differently." Frame the upgrade as unlocking what they're already earning.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 5</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 2</div>
+              <div class="step-name">Feature gap &mdash; what you're missing</div>
+              <div class="step-desc">Surface specific features they're not using that map to their pain points. For Olivia: standardized checklists, SOP templates, multi-crew visibility dashboards. "You're already documenting. The next step is standardizing."</div>
+              <div class="step-copy"><strong>Content need:</strong> Feature adoption matrix by tier (what's included in Standard vs. Pro vs. Elite) mapped to persona pain points</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 9</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 3</div>
+              <div class="step-name">Peer proof &mdash; similar company upgraded</div>
+              <div class="step-desc">Case study from a company in the same vertical and size band that upgraded. Focus on the delta: what changed after the upgrade, not what the product does. "Quick Roofing went from Standard to Elite and cut their dispute resolution time by 70%."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 14</div><div class="step-dot" style="background:var(--teal)"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 4</div>
+              <div class="step-name">AM-led upgrade conversation</div>
+              <div class="step-desc">Warm handoff from marketing nurture to AM conversation. "Your AM [name] can walk you through what the upgrade looks like for a [X]-crew operation. No pressure, just the math." When Olivia visits the pricing or upgrade page, Qualified routes the chat to the assigned AM with full context. Otherwise, AM initiates via Slack-pushed talk track.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge" style="background:var(--teal-bg);color:var(--teal-text);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;">EXP</span>
+        <span class="seq-persona-badge">Charlie &middot; Economic Buyer</span>
+        <span class="seq-title">ROI realization &rarr; contract expansion</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">3 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">12 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email (Marketo) &middot; Qualified &middot; QBR</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 1</div>
+              <div class="step-name">ROI you've already earned</div>
+              <div class="step-desc">Lead with their actual numbers: hours saved, disputes documented, jobs completed. "Your team saved [X] hours last quarter using CompanyCam. At your crew cost, that's $[Y] in recovered productivity. Here's how companies your size turn that into even more."</div>
+              <div class="step-copy"><strong>Content need:</strong> Account-specific usage report or ROI summary (pull from product data if available)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 7</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 2</div>
+              <div class="step-name">Marketing Suite + Elite &mdash; the next tier</div>
+              <div class="step-desc">Introduce the upgrade path. Marketing Suite ($99/mo) for before/after galleries and client-facing showcases. Elite for AI Walkthroughs, advanced reporting, and dedicated support. Frame as: "You've outgrown Standard. Here's what the next level looks like."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 12</div><div class="step-dot" style="background:var(--teal)"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 3</div>
+              <div class="step-name">QBR invite &mdash; let's look at the numbers together</div>
+              <div class="step-desc">Position the upgrade conversation as a QBR, not a sales pitch. "We put together a quick review of your team's usage and where the biggest ROI opportunities are. Worth 20 minutes?" AM co-owns this with marketing. If Charlie visits pricing/upgrade page, Qualified routes the conversation live with usage data pre-loaded.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge" style="background:var(--teal-bg);color:var(--teal-text);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;">EXP</span>
+        <span class="seq-persona-badge">Sam &middot; Sales / CRO</span>
+        <span class="seq-title">Past jobs as sales tools &mdash; Showcases + Marketing Suite</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Steps</div><div class="meta-value">3 touches</div></div>
+          <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">10 days</div></div>
+          <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-value">Email &middot; LinkedIn</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--teal)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 1</div>
+              <div class="step-name">Your job history is a sales deck you're not using</div>
+              <div class="step-desc">Sam's pain is losing bids. The insight: every completed job in CompanyCam is a before/after portfolio. "Your crews have documented hundreds of jobs. That's not just a record, it's a sales deck. Before-and-afters organized by project, ready to pull into any bid."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 5</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn</div>
+              <div class="step-name">Share case study &mdash; sales teams using documentation to win bids</div>
+              <div class="step-desc">Tag-based, not a direct pitch. Share content about how field documentation becomes a competitive advantage in the bidding process.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 10</div><div class="step-dot" style="background:var(--teal)"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Email 2</div>
+              <div class="step-name">Showcases + Marketing Suite CTA</div>
+              <div class="step-desc">Product reveal: Showcases lets you pull before-and-afters into shareable galleries. Marketing Suite ($99/mo) turns your job history into client-facing content. "Your estimators can attach a project gallery to any bid in under a minute."</div>
+              <div class="step-copy"><strong>Content need:</strong> Showcases demo video or product one-pager (ask Cortney/Charley)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="convergence">
+      <h4>Expansion vs. acquisition &mdash; key differences</h4>
+      <p>Acquisition sequences lead with pain the prospect hasn't solved yet. Expansion sequences lead with value the customer has already experienced and show them the next level. The tone shifts from "you have a problem" to "you've earned more." Both motions use the same personas (Olivia, Peter, Charlie, Sam) but the narrative arc is fundamentally different. Marty (Marketing/Elite Expansion) is an expansion-only persona who enters at the Marketing Suite and Elite upgrade conversation. <strong>Same engines, different last mile:</strong> 6sense, Salesforce, and Marketo are the shared foundation for both motions. The only difference is where the rep engages &mdash; Outreach for AEs (acquisition), Qualified + Slack for AMs (expansion).</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6: T3/T4 Trigger Logic -->
+  <div class="section">
+    <div class="section-label">06 &mdash; T3/T4 nurture + escalation triggers</div>
+    <h2>Marketo nurture &rarr; Outreach escalation</h2>
+    <p>T3/T4 accounts enter Marketo nurture sequences on TAL entry. Marketo owns the email cadence; 6sense owns display + programmatic. When a trigger fires, accounts escalate: acquisition accounts promote into AE-owned Outreach sequences, expansion accounts promote into AM engagement via Qualified + Slack. SFDC pushes all notifications to Slack for both teams. This is now buildable &mdash; Marketo is syncing records and ABX fields are next in the RevOps queue.</p>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t3">T3</span>
+        <span class="seq-persona-badge">Auto-enroll triggers</span>
+        <span class="seq-title">Marketo nurture &rarr; Outreach escalation</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <table class="trigger-table">
+          <thead>
+            <tr><th>Trigger condition</th><th>Action</th><th>Infrastructure needed</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Buying stage shifts to Consideration</td>
+              <td>Marketo flags account. SFDC &rarr; Slack notification to AE/AM. Enroll top 2 contacts (Olivia + Charlie) into Outreach T2-style sequence.</td>
+              <td>6sense &rarr; Marketo &rarr; SFDC &rarr; Slack &rarr; Outreach chain. 6sense component install required.</td>
+            </tr>
+            <tr>
+              <td>Intent score spikes above threshold (2+ weeks)</td>
+              <td>SFDC &rarr; Slack alert to marketing for manual review. If confirmed, promote to T2 and enroll in Outreach.</td>
+              <td>6sense alert &rarr; Marketo webhook &rarr; SFDC &rarr; Slack</td>
+            </tr>
+            <tr>
+              <td>Website visit from decision-maker title</td>
+              <td>Marketo creates SFDC task for marketing. Review for TAL promotion.</td>
+              <td>Marketo web tracking or Qualified chat routing + 6sense web ID</td>
+            </tr>
+            <tr>
+              <td>Ghost Tier graduation</td>
+              <td>Prospect account is connected to 2+ Ghost Tier-tagged contacts &mdash; people who showed interest in CompanyCam (trial signup, ad click, content download, site visit) but didn't meet ICP criteria or convert. When a prospect's network includes multiple people who've engaged with CompanyCam, that's a network awareness signal worth promoting. Marketo flags for review, decision-maker contacts enter nurture.</td>
+              <td>Ghost Tier matching logic in SFDC + Marketo smart list</td>
+            </tr>
+            <tr>
+              <td>Marketo engagement score threshold</td>
+              <td>T3/T4 contact hits engagement threshold (opens + clicks across nurture) &rarr; flag for tier promotion review</td>
+              <td>Marketo scoring program (buildable now)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge badge-t4">T4</span>
+        <span class="seq-persona-badge">Exception triggers only</span>
+        <span class="seq-title">Strong signal overrides</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px;">T4 accounts stay in fully automated marketing. They only enter human-touched sequences under exception conditions:</p>
+        <table class="trigger-table">
+          <thead>
+            <tr><th>Exception trigger</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Buying stage jumps directly to Decision (skip Consideration)</td>
+              <td>Immediate SFDC &rarr; Slack alert to AM/AE + manual enrollment into T2 sequence</td>
+            </tr>
+            <tr>
+              <td>Multiple decision-maker titles engage within 7 days</td>
+              <td>Flag for T3 promotion review. SFDC &rarr; Slack to marketing. If promoted, auto-enroll.</td>
+            </tr>
+            <tr>
+              <td>Inbound request (demo, pricing page, Qualified chat) from TAL account</td>
+              <td>Route to MM AM/AE regardless of tier via SFDC &rarr; Slack. Enroll in appropriate sequence post-conversation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6.5: Ghost Tier + Network Expansion -->
+  <div class="section">
+    <div class="section-label">06b &mdash; Ghost Tier + Network expansion plays</div>
+    <h2>Acquisition through signals &amp; relationships</h2>
+    <p>Two plays that feed net-new accounts into the sequence architecture from different entry points. Ghost Tier converts field-level trial activity into decision-maker engagement. Network Expansion leverages existing customer relationships to open doors at similar companies. Both can be orchestrated through Marketo.</p>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge" style="background:var(--pink-bg);color:var(--pink-text);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;">Ghost</span>
+        <span class="seq-persona-badge">Frankie &rarr; Olivia/Charlie</span>
+        <span class="seq-title">Trial signal &rarr; decision-maker activation</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="seq-meta">
+          <div class="meta-item"><div class="meta-label">Entry signal</div><div class="meta-value">Field crew trial signup</div></div>
+          <div class="meta-item"><div class="meta-label">Target</div><div class="meta-value">Decision-maker at same company</div></div>
+          <div class="meta-item"><div class="meta-label">System</div><div class="meta-value">Marketo + LinkedIn</div></div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Signal</div><div class="step-dot" style="background:var(--pink)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--pink);">Trigger</div>
+              <div class="step-name">Field user (Frankie) signs up for trial</div>
+              <div class="step-desc">900&ndash;1,200 MM trial signups/month are field techs, not decision-makers. Current motion treats them as waste. Ghost Tier reframes them as network entry points.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 0</div><div class="step-dot" style="background:var(--amber)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-task">Account match</div>
+              <div class="step-name">Match trial user to account &rarr; identify decision-makers</div>
+              <div class="step-desc">SFDC account match (domain/company name). ZoomInfo enrichment to identify Olivia/Charlie-persona contacts at the same org. If match confidence is low, hold in Ghost Tier nurture.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 1</div><div class="step-dot" style="background:var(--purple)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-email">Marketo &mdash; Frankie nurture</div>
+              <div class="step-name">3-email peer awareness sequence to the field user</div>
+              <div class="step-desc">Keep Frankie engaged and plant the seed: "your boss would want to know about this." Goal isn't to sell Frankie &mdash; it's to arm them with language to mention CompanyCam internally or get them to invite a colleague.</div>
+              <div class="step-copy"><strong>Email 1:</strong> "Welcome &mdash; here's how crews like yours use CompanyCam on the job." (Adoption-focused, zero pitch to leadership.)<br><br><strong>Email 2 (Day 5):</strong> "Your team lead would probably want to see this &mdash; here's a one-pager on what your crew's been documenting." (Champion enablement hook.)<br><br><strong>Email 3 (Day 12):</strong> "Other crews at companies your size brought this to their ops lead. Here's what happened." (Social proof + internal escalation nudge.)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 1</div><div class="step-dot" style="background:var(--blue)"></div><div class="step-line"></div></div>
+            <div class="step-content">
+              <div class="step-channel ch-linkedin">LinkedIn Matched Audiences</div>
+              <div class="step-name">Target decision-makers at Frankie's company</div>
+              <div class="step-desc">LinkedIn ads targeting Olivia/Charlie-persona titles at the matched account. Messaging: "Your team already chose CompanyCam. Here's why ops leaders are making it standard." Runs parallel to Frankie's email nurture.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-marker"><div class="step-day">Day 30</div><div class="step-dot" style="background:var(--teal)"></div></div>
+            <div class="step-content">
+              <div class="step-channel" style="color:var(--teal);">Graduation check</div>
+              <div class="step-name">TAL promotion criteria</div>
+              <div class="step-desc">Graduation triggers when a prospect account is connected to 2+ Ghost Tier-tagged contacts &mdash; people who showed interest in CompanyCam (trial, ad engagement, site visit) but didn't convert or meet ICP. This is a network awareness signal: CompanyCam is already on the radar in that prospect's professional circle. Not chasing the prospect directly, but letting the network pull them in. If the account meets ICP gates (50+ employees, $20M+ revenue), promote directly and enroll decision-maker contacts in Marketo T3 nurture or Outreach T2 sequence depending on signal strength.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-tier-badge" style="background:var(--coral-bg);color:var(--coral-text);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;">New</span>
+        <span class="seq-persona-badge">Kelly Danahy concept</span>
+        <span class="seq-title">Network expansion &mdash; customers as acquisition engines</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <div class="convergence" style="background:var(--coral-bg);margin-bottom:20px;">
+          <h4 style="color:var(--coral-text);">CRO input (Apr 20)</h4>
+          <p style="color:var(--coral-text);">"How can we use our top customers' relationships and reputation to get in front of other contractors like them? All these contractors work together and know each other."</p>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">This is a distinct acquisition motion that sits alongside Ghost Tier. Ghost Tier uses <em>inbound trial signals</em> to find accounts. Network Expansion uses <em>existing customer relationships</em> to find accounts. Both feed the same TAL &rarr; tier &rarr; sequence architecture.</p>
+
+        <table class="trigger-table">
+          <thead>
+            <tr><th style="width:25%">Mechanism</th><th>How it works</th><th style="width:25%">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500;">Job site network mapping</td>
+              <td>Identify which non-customer contractors work alongside our top customers on the same projects. GCs work with the same subs repeatedly &mdash; if the GC uses CompanyCam, the subs see it daily. Flip that into targeted outreach: "Your GC already runs on CompanyCam. Here's why their subs are switching too."</td>
+              <td style="font-weight:500;color:var(--amber);">Needs scoping</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Referral-triggered ABX</td>
+              <td>When a top customer refers another contractor (formal or informal), that referred account enters the TAL as a warm lead with a referral tag. Sequence messaging references the relationship: "[Customer] thought you'd want to see this." Completely different tone than cold outbound.</td>
+              <td style="font-weight:500;color:var(--amber);">Needs scoping</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Trade association / peer clustering</td>
+              <td>Top customers in a vertical (e.g., top 10 roofing companies using CompanyCam) become social proof for outreach to similar companies in the same trade and region. "7 of the top 10 roofing contractors in [region] use CompanyCam. Here's what they know that you don't."</td>
+              <td style="font-weight:500;color:var(--amber);">Needs scoping</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Champion-as-advocate</td>
+              <td>Identify Olivia/Peter personas at top accounts who are active CompanyCam advocates. Recruit them for case studies, testimonials, or peer-to-peer introductions. "Would you be open to a quick call with an ops lead at a similar company who's evaluating documentation tools?" Warm intro &gt; cold outreach every time.</td>
+              <td style="font-weight:500;color:var(--amber);">Needs scoping</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="convergence" style="margin-top:20px;">
+          <h4>Where this connects to the sequence architecture</h4>
+          <p>Accounts entering through network expansion get tagged with a referral source in SFDC. This changes the sequence messaging &mdash; instead of pain-forward cold opens, the Olivia/Charlie threads lead with the peer relationship. "Your GC runs on CompanyCam" or "[Referrer] thought you'd want to see this" is a fundamentally different entry point than the standard T2 pain-forward sequence. This likely needs a <strong>dedicated sequence variant</strong> &mdash; same cadence structure, different copy for steps 1&ndash;2, then converges with the standard T2 flow at step 3 (proof point).</p>
+        </div>
+
+        <div style="background:var(--surface-alt);border-radius:8px;padding:14px 18px;margin-top:16px;">
+          <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:6px;">Open questions for scoping</div>
+          <div style="font-size:12px;color:var(--text-2);line-height:1.7;">
+            &bull; Do we have data on which customers work together on the same projects? Is this in CompanyCam product data or would it come from sales/Gong?<br>
+            &bull; Does a formal referral program exist, or is this all informal/organic today?<br>
+            &bull; How do we identify "top customers" &mdash; by usage, by revenue, by NPS, or by willingness to advocate?<br>
+            &bull; Who owns this? Is it a marketing play (Marketo-driven), a sales play (AE-driven referral asks), or a CS play (CSM-facilitated intros)?<br>
+            &bull; Kelly said he hasn't read all the campaign plays yet &mdash; worth flagging Ghost Tier to him since it's the closest existing architecture to what he's describing.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Content needs -->
+  <div class="section">
+    <div class="section-label">07 &mdash; Content + creative needs</div>
+    <h2>What to discuss with Cortney + Charley</h2>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-persona-badge" style="background:var(--teal-bg);color:var(--teal-text);">Cortney &middot; PMM</span>
+        <span class="seq-title">Messaging validation + content gaps</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <table class="trigger-table">
+          <thead>
+            <tr><th style="width:35%">Ask</th><th>Context</th><th style="width:25%">Priority</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Validate sequence copy against Doc 05 persona SMITs</td>
+              <td>Does the Olivia pain-forward open echo "you shouldn't have to call around"? Does Charlie's angle land on risk vs. ROI?</td>
+              <td style="font-weight:500;color:var(--red);">This week</td>
+            </tr>
+            <tr>
+              <td>Vertical-specific case study inventory</td>
+              <td>Email 2 (proof point) needs trade-matched stories. What do we have for roofing, HVAC, electrical, plumbing, facilities?</td>
+              <td style="font-weight:500;color:var(--red);">This week</td>
+            </tr>
+            <tr>
+              <td>ROI calculator / one-pager that scales by crew count</td>
+              <td>Charlie Email 2 needs hard numbers. Does this exist? If not, what's the quickest version we can build?</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+            <tr>
+              <td>PM-focused workflow comparison asset</td>
+              <td>Peter's thread needs a "before/after" of project documentation workflow. Short video or visual one-pager.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+            <tr>
+              <td>Showcases product one-pager for Sam expansion play</td>
+              <td>Sam Email 2 introduces the product. Need a clean asset to link or attach.</td>
+              <td style="font-weight:500;color:var(--text-3);">Phase 2</td>
+            </tr>
+            <tr style="background:var(--teal-bg);">
+              <td>Marketo winback sequence messaging</td>
+              <td>738 lost/churned accounts are now a separate Marketo play. Different tone than acquisition &mdash; acknowledge prior relationship. "We've changed since you left" or "here's what's new." Need Cortney's input on re-engagement angle vs. starting fresh.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+            <tr style="background:var(--teal-bg);">
+              <td>T3/T4 Marketo nurture email content</td>
+              <td>824 active accounts in Marketo nurture need a lightweight email cadence &mdash; buying stage-aware, persona-matched but not personalized. Cortney to define messaging hierarchy for automated nurture vs. AE-owned Outreach sequences.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="seq-block">
+      <div class="seq-header" onclick="toggleSeq(this)">
+        <span class="seq-persona-badge" style="background:var(--coral-bg);color:var(--coral-text);">Charley &middot; Creative</span>
+        <span class="seq-title">Email template design + visual assets</span>
+        <span class="seq-toggle">&#9660;</span>
+      </div>
+      <div class="seq-body">
+        <table class="trigger-table">
+          <thead>
+            <tr><th style="width:35%">Ask</th><th>Context</th><th style="width:25%">Priority</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Outreach email template design</td>
+              <td>Does the team use branded HTML templates in Outreach, or plain text? For MM ABX, plain text may perform better &mdash; need creative buy-in on that direction.</td>
+              <td style="font-weight:500;color:var(--red);">This week</td>
+            </tr>
+            <tr>
+              <td>Case study one-pager template</td>
+              <td>Need a reusable format for vertical-matched proof points. One story, one metric, one pull quote. Linked from sequence emails.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+            <tr>
+              <td>ROI visual / infographic template</td>
+              <td>Charlie thread needs a "numbers at a glance" asset. Crew count &rarr; hours saved &rarr; dollars recovered. Shareable format.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+            <tr>
+              <td>Brand direction for MM outbound</td>
+              <td>MM tone may need to skew more consultative/enterprise vs. SMB's friendly/casual. Is there an existing MM brand direction, or do we need to define it?</td>
+              <td style="font-weight:500;color:var(--text-3);">Ongoing</td>
+            </tr>
+            <tr style="background:var(--coral-bg);">
+              <td>Marketo email template design</td>
+              <td>T3/T4 nurture and winback sequences will run through Marketo. Need branded email templates distinct from Outreach (which may be plain text). Marketo emails should feel like marketing, Outreach emails should feel like a person.</td>
+              <td style="font-weight:500;color:var(--amber);">Next 2 weeks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Open questions -->
+  <div class="section">
+    <div class="section-label">08 &mdash; Open questions</div>
+    <div class="discussion">
+      <h3>Decisions needed to move forward</h3>
+      <ul class="q-list">
+        <li><span class="q-num">01</span>Are we aligned that T2 is the primary build focus and T1 is a personalization layer on top? Or should T1 sequences be built independently?</li>
+        <li><span class="q-num">02</span>Plain text vs. branded HTML for outbound emails &mdash; any existing POV? Plain text typically outperforms for 1:1 outreach, but there may be brand considerations.</li>
+        <li><span class="q-num">03</span>Who enrolls? In the manual-enrollment Phase 1 world, are AMs/AEs self-enrolling their T1/T2 accounts from a Slack notification, or does marketing hand them a list?</li>
+        <li><span class="q-num">04</span>The Olivia &rarr; Charlie convergence play (champion forwards ROI content to buyer) &mdash; does this match how MM deals actually progress? Or do reps multi-thread independently? With Marketo live, we could automate this bridge in Phase 2.</li>
+        <li><span class="q-num">05</span>Sam expansion sequence (Showcases + Marketing Suite) &mdash; is this a Phase 1 priority, or should we park it and focus acquisition sequences first?</li>
+        <li><span class="q-num">06</span>Cody provided a list of existing Outreach sequences for audit. Review in progress. Which sequences align with the persona-threaded architecture, which need to be reworked, and which should be retired?</li>
+        <li><span class="q-num">07</span>The system split &mdash; 6sense, Salesforce, and Marketo as shared engines; Outreach for acquisition AEs; Qualified + Slack for expansion AMs; Marketo for T3/T4 nurture across both &mdash; does this feel right? Or do we see the tools overlapping differently?</li>
+        <li><span class="q-num">08</span>T3/T4 Marketo nurture &mdash; should we start scoping nurture email content now (this week with Cortney), or wait until ABX fields are live in SFDC?</li>
+        <li><span class="q-num">09</span>Ghost Tier (Frankie &rarr; Olivia/Charlie activation via Marketo + LinkedIn) &mdash; Phase 1 or Phase 2? The 900&ndash;1,200 trial signups/month are happening now regardless. If Marketo can handle the nurture, we could start capturing that signal immediately.</li>
+        <li><span class="q-num">10</span>Kelly's network expansion concept (using top customer relationships to acquire similar contractors) &mdash; should we scope this formally for Phase 2, or keep it as a backlog idea?</li>
+        <li><span class="q-num">11</span>MM-013 Awareness play has creative in progress with Hank (started Apr 17). Do we have a review timeline? May 1 is the Phase 1 launch target.</li>
+        <li><span class="q-num">12</span>What state does this document need to be in for the Friday ABX Sales Sequence check-in (Apr 24, 2pm)?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>MM ABX Sequence Skeleton v1.5 &middot; Draft &middot; Acq/Exp tool split + Qualified + Marketo + Ghost Tier</span>
+    <span>Morgan Turner &middot; CompanyCam &middot; April 20, 2026</span>
+  </div>
+
+</div>
+
+<script>
+function showCascade(id, btn) {
+  document.querySelectorAll('.cascade-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.cascade-tab').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.color = 'var(--text-3)';
+    b.style.fontWeight = '400';
+    b.classList.remove('cascade-tab-active');
+  });
+  document.getElementById(id).style.display = 'block';
+  btn.style.fontWeight = '600';
+  btn.classList.add('cascade-tab-active');
+  if (id === 'c-acq') { btn.style.background = 'var(--blue-bg)'; btn.style.color = 'var(--blue-text)'; }
+  else if (id === 'c-exp') { btn.style.background = 'var(--teal-bg)'; btn.style.color = 'var(--teal-text)'; }
+  else if (id === 'c-wb') { btn.style.background = 'var(--red-bg)'; btn.style.color = 'var(--red-text)'; }
+  else if (id === 'c-ghost') { btn.style.background = 'var(--pink-bg)'; btn.style.color = 'var(--pink-text)'; }
+  else if (id === 'c-net') { btn.style.background = 'var(--green-bg)'; btn.style.color = 'var(--green-text)'; }
+}
+function toggleSeq(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.seq-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const first = document.querySelector('.seq-body');
+  if (first) {
+    first.classList.add('open');
+    first.previousElementSibling.querySelector('.seq-toggle').classList.add('open');
+  }
+});
+</script>
+</body>
+</html>
